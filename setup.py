@@ -11,7 +11,7 @@ README = (HERE / "README.md").read_text()
 
 setup(
     name='aitkens',
-    version='0.0.0',
+    version='0.1.0',
     packages=['aitkens'],
     url='https://github.com/jftsang/aitkens',
     license='CC BY 4.0',
