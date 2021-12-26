@@ -3,7 +3,7 @@ from unittest import TestCase
 import numpy as np
 from hypothesis import given, strategies as st
 
-from aitkens import accelerate
+from aitkens import accelerate, second_differences
 
 
 class TestAitkens(TestCase):
@@ -27,6 +27,20 @@ class TestAitkens(TestCase):
         lst = [val, val, val]
         accelerated_lst = accelerate(lst)
         self.assertEqual(accelerated_lst, [val])
+
+    def test_forward_differences(self):
+        xs = [1, 4, 9, 16]
+        txs, dxs, d2xs = second_differences(xs, direction='forward')
+        self.assertListEqual([1, 4], list(txs))
+        self.assertListEqual([3, 5], list(dxs))
+        self.assertListEqual([2, 2], list(d2xs))
+
+    def test_central_differences(self):
+        xs = [1, 4, 9, 16]
+        txs, dxs, d2xs = second_differences(xs, direction='central')
+        self.assertListEqual([4, 9], list(txs))
+        self.assertListEqual([4, 6], list(dxs))
+        self.assertListEqual([2, 2], list(d2xs))
 
     def test_central_differences_have_expected_lengths(self):
         xs = np.random.rand(8)
