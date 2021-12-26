@@ -27,3 +27,13 @@ class TestAitkens(TestCase):
         lst = [val, val, val]
         accelerated_lst = accelerate(lst)
         self.assertEqual(accelerated_lst, [val])
+
+    def test_central_differences_have_expected_lengths(self):
+        xs = np.random.rand(8)
+        axs = accelerate(xs, direction='central')
+        self.assertTupleEqual((6,), axs.shape)
+
+    def test_forward_differences_have_expected_lengths(self):
+        xs = np.random.rand(8)
+        axs = accelerate(xs, direction='forward')
+        self.assertTupleEqual((6,), axs.shape)
