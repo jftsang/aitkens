@@ -24,6 +24,7 @@ def second_differences(xs, *, direction):
 def accelerate(xs, **kwargs):
     iterations = kwargs.pop('iterations', 1)
     direction = kwargs.setdefault('direction', 'forward')
+    strength = kwargs.setdefault('strength', 1)
 
     if not isinstance(iterations, int) or iterations < 1:
         raise TypeError('The number of iterations must be a positive integer.')
@@ -39,4 +40,4 @@ def accelerate(xs, **kwargs):
         0,
         np.divide(dxs ** 2, d2xs)
     )
-    return xs - correction
+    return xs - strength * correction

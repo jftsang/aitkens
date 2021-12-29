@@ -81,3 +81,14 @@ class TestAitkens(TestCase):
         np.testing.assert_allclose(acc2, [ 0.71428571, -5., -1.13636364])
         acc3 = accelerate(xs, iterations=3)
         np.testing.assert_allclose(acc3, [-2.69491525])
+
+    @parameterized.expand([
+        (0, [8, 4]),
+        (0.5, [4, 2]),
+        (1, [0, 0]),
+        (2, [-8, -4])
+    ])
+    def test_strength(self, strength, expected):
+        xs = [8, 4, 2, 1]
+        axs = accelerate(xs, strength=strength)
+        np.testing.assert_allclose(axs, expected)
