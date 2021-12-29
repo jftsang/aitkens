@@ -21,7 +21,18 @@ def second_differences(xs, *, direction):
         raise NotImplementedError('direction must be forward or central')
 
 
-def accelerate(xs, *, direction='forward'):
+def accelerate(xs, **kwargs):
+    iterations = kwargs.pop('iterations', 1)
+    direction = kwargs.setdefault('direction', 'forward')
+
+    if not isinstance(iterations, int) or iterations < 1:
+        raise TypeError('The number of iterations must be a positive integer.')
+
+    if iterations > 1:
+        return accelerate(
+            accelerate(xs, **kwargs), iterations=iterations-1, **kwargs
+        )
+
     xs, dxs, d2xs = second_differences(xs, direction=direction)
     return np.where(
         np.logical_and(dxs == 0, d2xs == 0),

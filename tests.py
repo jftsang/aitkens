@@ -3,6 +3,7 @@ from unittest.mock import patch
 
 import numpy as np
 from hypothesis import given, strategies as st
+from parameterized import parameterized
 
 from aitkens import accelerate, second_differences
 
@@ -65,3 +66,18 @@ class TestAitkens(TestCase):
         axs = accelerate(xs)  # not specifying direction
         m.assert_called_once()
         self.assertEqual('forward', m.call_args.kwargs['direction'])
+
+    @parameterized.expand([(0,), (-1,), (0.5,), (1.,)])
+    def test_rejects_invalid_iterations(self, it):
+        xs = [0, 0, 0]
+        with self.assertRaises(TypeError):
+            accelerate(xs, iterations=it)
+
+    def test_multiple_iterations(self):
+        xs = [100, 50, 20, 10, 5, 2, 1]
+        acc1 = accelerate(xs)
+        np.testing.assert_allclose(acc1, [-25., 5., 0., -2.5, 0.5])
+        acc2 = accelerate(xs, iterations=2)
+        np.testing.assert_allclose(acc2, [ 0.71428571, -5., -1.13636364])
+        acc3 = accelerate(xs, iterations=3)
+        np.testing.assert_allclose(acc3, [-2.69491525])

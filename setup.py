@@ -21,5 +21,5 @@ setup(
     long_description=README,
     long_description_content_type="text/markdown",
     install_requires=['numpy'],
-    extras_require={'develop': ['hypothesis']},
+    extras_require={'develop': ['hypothesis', 'parameterized']},
 )
