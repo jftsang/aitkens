@@ -34,8 +34,9 @@ def accelerate(xs, **kwargs):
         )
 
     xs, dxs, d2xs = second_differences(xs, direction=direction)
-    return np.where(
-        np.logical_and(dxs == 0, d2xs == 0),
-        xs,
-        xs - dxs ** 2 / d2xs
+    correction = np.where(
+        (dxs == 0) & (d2xs == 0),
+        0,
+        np.divide(dxs ** 2, d2xs)
     )
+    return xs - correction
