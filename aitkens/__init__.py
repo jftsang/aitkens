@@ -1,7 +1,7 @@
 import numpy as np
 
 
-def second_differences(xs, *, direction='central'):
+def second_differences(xs, *, direction):
     """Compute second differences. Returns three numpy arrays: the first
     and second differences, as well as a truncated version of the input
     array so that the positions at each index match up.
@@ -21,7 +21,7 @@ def second_differences(xs, *, direction='central'):
         raise NotImplementedError('direction must be forward or central')
 
 
-def accelerate(xs, *, direction='central'):
+def accelerate(xs, *, direction='forward'):
     xs, dxs, d2xs = second_differences(xs, direction=direction)
     return np.where(
         np.logical_and(dxs == 0, d2xs == 0),

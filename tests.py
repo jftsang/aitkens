@@ -1,4 +1,5 @@
 from unittest import TestCase
+from unittest.mock import patch
 
 import numpy as np
 from hypothesis import given, strategies as st
@@ -56,3 +57,11 @@ class TestAitkens(TestCase):
         xs = np.random.rand(8)
         axs = accelerate(xs, direction='forward')
         self.assertTupleEqual((6,), axs.shape)
+
+    @patch('aitkens.second_differences')
+    def test_default_is_forward_differences(self, m):
+        m.return_value = (np.array([]), np.array([]), np.array([]))
+        xs = np.random.rand(8)
+        axs = accelerate(xs)  # not specifying direction
+        m.assert_called_once()
+        self.assertEqual('forward', m.call_args.kwargs['direction'])
